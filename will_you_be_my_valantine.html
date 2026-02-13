@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff4d6d, #ff99c8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Floating hearts container */
+#hearts-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heart {
+  position: absolute;
+  color: #ff1744;
+  font-size: 20px;
+  animation: floatUp 3s linear forwards;
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-800px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 40px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.4);
+  z-index: 2;
+}
+
+.container iframe {
+  width: 280px;
+  height: 280px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.question {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 30px;
+  text-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+.buttons {
+  position: relative;
+  width: 320px;
+  height: 60px;
+  margin: auto;
+}
+
+button {
+  padding: 12px 35px;
+  font-size: 18px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  position: absolute;
+}
+
+.yes-btn {
+  left: 0;
+  background: white;
+  color: #ff4d6d;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+.yes-btn:hover {
+  transform: scale(1.1);
+}
+
+.no-btn {
+  right: 0;
+  background: #ff1744;
+  color: white;
+}
+
+/* Proposal mode animation */
+.proposal-mode {
+  animation: glowBg 2s infinite alternate;
+}
+
+@keyframes glowBg {
+  from { background: linear-gradient(135deg, #ff4d6d, #ff99c8); }
+  to { background: linear-gradient(135deg, #ff1744, #ff66b2); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="hearts-container"></div>
+
+<div class="container">
+  <iframe id="mainGif"
+    src="https://giphy.com/embed/OkbYYldmZpl1tSA7Pz"
+    frameBorder="0"
+    allowFullScreen>
+  </iframe>
+
+  <div class="question" id="questionText">
+    💖 Will you be my Valentine? 💖
+  </div>
+
+  <div class="buttons">
+    <button class="yes-btn" onclick="sayYes()">Yes 💘</button>
+    <button class="no-btn" id="noBtn">No 😢</button>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const gif = document.getElementById("mainGif");
+const heartsContainer = document.getElementById("hearts-container");
+let moveRight = false;
+
+/* Side-to-side hover */
+noBtn.addEventListener("mouseover", () => {
+  if (moveRight) {
+    noBtn.style.right = "0";
+    noBtn.style.left = "auto";
+  } else {
+    noBtn.style.left = "150px";
+    noBtn.style.right = "auto";
+  }
+  moveRight = !moveRight;
+});
+
+/* NO pressed */
+noBtn.addEventListener("click", () => {
+  noBtn.style.display = "none";
+
+  gif.src = "https://giphy.com/embed/ILB9TvD7tRiraaoJn9";
+
+  document.getElementById("questionText").innerHTML =
+    "🥺 one more time, will you be my valentine?";
+});
+
+/* YES pressed */
+function sayYes() {
+
+  document.body.classList.add("proposal-mode");
+
+  // Hide buttons instantly
+  document.querySelector(".buttons").style.display = "none";
+  document.getElementById("questionText").innerHTML =
+    "💍 Forever starts now 💖";
+
+  // Heart burst
+  for (let i = 0; i < 80; i++) {
+    createHeart();
+  }
+
+  setTimeout(() => {
+    document.body.style.transition = "opacity 1.5s ease";
+    document.body.style.opacity = "0";
+  }, 2000);
+
+  setTimeout(() => {
+    window.location.href = "my_letter_of_love.html";
+  }, 2500);
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.bottom = "0px";
+  heart.style.fontSize = Math.random() * 25 + 15 + "px";
+  heartsContainer.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 3000);
+}
+</script>
